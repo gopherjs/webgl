@@ -304,15 +304,42 @@ const (
 )
 
 type ContextAttributes struct {
-	Alpha, Depth, Stencil, Antialias, PremultipliedAlpha, PreserveDrawingBuffer bool
+	// If Alpha is true, the drawing buffer has an alpha channel for
+	// the purposes of performing OpenGL destination alpha operations
+	// and compositing with the page.
+	Alpha bool
+
+	// If Depth is true, the drawing buffer has a depth buffer of at least 16 bits.
+	Depth bool
+
+	// If Stencil is true, the drawing buffer has a stencil buffer of at least 8 bits.
+	Stencil bool
+
+	// If Antialias is true and the implementation supports antialiasing
+	// the drawing buffer will perform antialiasing using its choice of
+	// technique (multisample/supersample) and quality.
+	Antialias bool
+
+	// If PremultipliedAlpha is true the page compositor will assume the
+	// drawing buffer contains colors with premultiplied alpha.
+	// This flag is ignored if the alpha flag is false.
+	PremultipliedAlpha bool
+
+	// If the value is true the buffers will not be cleared and will preserve
+	// their values until cleared or overwritten by the author.
+	PreserveDrawingBuffer bool
 }
 
+// Returns a copy of the default WebGL context attributes.
 func DefaultAttributes() *ContextAttributes {
 	return &ContextAttributes{true, true, false, true, true, false}
 }
 
 type Context struct{ js.Object }
 
+// NewContext takes an HTML5 canvas object and optional context attributes.
+// If an error is returned it means you won't have access to WebGL
+// functionality.
 func NewContext(canvas js.Object, ca *ContextAttributes) (*Context, error) {
 	if js.Global("window").Get("WebGLRenderingContext").IsUndefined() {
 		return nil, errors.New("Your browser doesn't appear to support webgl.")
@@ -340,6 +367,9 @@ func NewContext(canvas js.Object, ca *ContextAttributes) (*Context, error) {
 	return &Context{gl}, nil
 }
 
+// Returns the context attributes active on the context. These values might
+// be different than what was requested on context creation if the
+// browser's implementation doesn't support a feature.
 func (c *Context) GetContextAttributes() ContextAttributes {
 	ca := c.Call("getContextAttributes")
 	return ContextAttributes{
@@ -387,6 +417,7 @@ func (c *Context) BindTexture(target int, texture js.Object) {
 	c.Call("bindTexture", target, texture)
 }
 
+// The GL_BLEND_COLOR may be used to calculate the source and destination blending factors.
 func (c *Context) BlendColor(r, g, b, a float64) {
 	c.Call("blendColor", r, g, b, a)
 }
