@@ -352,10 +352,6 @@ func (c *Context) GetContextAttributes() ContextAttributes {
 	}
 }
 
-func (c *Context) IsContextLost() bool {
-	return c.Call("isContextLost").Bool()
-}
-
 // Specifies the active texture unit.
 func (c *Context) ActiveTexture(texture int) {
 	c.Call("activeTexture", texture)
@@ -772,32 +768,92 @@ func (c *Context) GetVertexAttribOffset(index, pname int) int {
 }
 
 // public function hint(target:GLenum, mode:GLenum) : Void;
-// public function isBuffer(buffer:WebGLBuffer) : GLboolean;
-// public function isEnabled(cap:GLenum) : GLboolean;
-// public function isFramebuffer(framebuffer:WebGLFramebuffer) : GLboolean;
-// public function isProgram(program:WebGLProgram) : GLboolean;
-// public function  isRenderbuffer(renderbuffer:WebGLRenderbuffer) : GLboolean;
-// public function isShader(shader:WebGLShader) : GLboolean;
-// public function isTexture(texture:WebGLTexture) : GLboolean;
 
+// Returns true if buffer is valid, false otherwise.
+func (c *Context) IsBuffer(buffer js.Object) bool {
+	return c.Call("isBuffer", buffer).Bool()
+}
+
+// Returns whether the WebGL context has been lost.
+func (c *Context) IsContextLost() bool {
+	return c.Call("isContextLost").Bool()
+}
+
+// Returns true if buffer is valid, false otherwise.
+func (c *Context) IsFramebuffer(framebuffer js.Object) bool {
+	return c.Call("isFramebuffer", framebuffer).Bool()
+}
+
+// Returns true if program object is valid, false otherwise.
+func (c *Context) IsProgram(program js.Object) bool {
+	return c.Call("isProgram", program).Bool()
+}
+
+// Returns true if buffer is valid, false otherwise.
+func (c *Context) IsRenderbuffer(renderbuffer js.Object) bool {
+	return c.Call("isRenderbuffer", renderbuffer).Bool()
+}
+
+// Returns true if shader is valid, false otherwise.
+func (c *Context) IsShader(shader js.Object) bool {
+	return c.Call("isShader", shader).Bool()
+}
+
+// Returns true if texture is valid, false otherwise.
+func (c *Context) IsTexture(texture js.Object) bool {
+	return c.Call("isTexture", texture).Bool()
+}
+
+// Returns whether or not a WebGL capability is enabled for this context.
+func (c *Context) IsEnabled(capability int) bool {
+	return c.Call("isEnabled", capability).Bool()
+}
+
+// Sets the width of lines in WebGL.
 func (c *Context) LineWidth(width float64) {
 	c.Call("lineWidth", width)
 }
 
+// Links an attached vertex shader and an attached fragment shader
+// to a program so it can be used by the graphics processing unit (GPU).
 func (c *Context) LinkProgram(program js.Object) {
 	c.Call("linkProgram", program)
 }
 
+// Sets pixel storage modes for readPixels and unpacking of textures
+// with texImage2D and texSubImage2D.
 func (c *Context) PixelStorei(pname, param int) {
 	c.Call("pixelStorei", pname, param)
 }
 
-// public function polygonOffset(factor:GLfloat, units:GLfloat) : Void;
-// public function readPixels(x:GLint, y:GLint, width:GLsizei, height:GLsizei, format:GLenum, type:GLenum, pixels:ArrayBufferView) : Void;
-// public function renderbufferStorage(target:GLenum, internalformat:GLenum, width:GLsizei, height:GLsizei) : Void;
-// public function sampleCoverage(value:GLclampf, invert:GLboolean) : Void;
-// public function scissor(x:GLint, y:GLint, width:GLsizei, height:GLsizei) : Void;
+// Sets the implementation-specific units and scale factor
+// used to calculate fragment depth values.
+func (c *Context) PolygonOffset(factor, units float64) {
+	c.Call("polygonOffset", factor, units)
+}
 
+// TODO: Figure out if pixels should be a slice.
+// Reads pixel data into an ArrayBufferView object from a
+// rectangular area in the color buffer of the active frame buffer.
+func (c *Context) ReadPixels(x, y, width, height, format, typ int, pixels js.Object) {
+	c.Call("readPixels", x, y, width, height, format, typ, pixels)
+}
+
+// Creates or replaces the data store for the currently bound WebGLRenderbuffer object.
+func (c *Context) RenderbufferStorage(target, internalFormat, width, height int) {
+	c.Call("renderbufferStorage", target, internalFormat, width, height)
+}
+
+//func (c *Context) SampleCoverage(value float64, invert bool) {
+//	c.Call("sampleCoverage", value, invert)
+//}
+
+// Sets the dimensions of the scissor box.
+func (c *Context) Scissor(x, y, width, height int) {
+	c.Call("scissor", x, y, width, height)
+}
+
+// Sets and replaces shader source code in a shader object.
 func (c *Context) ShaderSource(shader js.Object, source string) {
 	c.Call("shaderSource", shader, source)
 }
@@ -809,23 +865,61 @@ func (c *Context) ShaderSource(shader js.Object, source string) {
 // public function stencilOp(fail:GLenum, zfail:GLenum, zpass:GLenum) : Void;
 // public function stencilOpSeparate(face:GLenum, fail:GLenum, zfail:GLenum, zpass:GLenum) : Void;
 
+// Loads the supplied pixel data into a texture.
 func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, image js.Object) {
 	c.Call("texImage2D", target, level, internalFormat, format, kind, image)
 }
 
+// Sets texture parameters for the current texture unit.
 func (c *Context) TexParameteri(target int, pname int, param int) {
 	c.Call("texParameteri", target, pname, param)
 }
 
-// public function texSubImage2D(target:GLenum, level:GLint, xoffset:GLint , yoffset:GLint, format:GLenum, type:GLenum, video:HTMLVideoElement) : Void;
-// public function uniform1f(location:WebGLUniformLocation, x:GLfloat) : Void;
-// public function uniform1i(location:WebGLUniformLocation, x:GLint) : Void;
-// public function uniform2f(location:WebGLUniformLocation, x:GLfloat, y:GLfloat) : Void;
-// public function uniform2i(location:WebGLUniformLocation, x:GLint, y:GLint) : Void;
-// public function uniform3f(location:WebGLUniformLocation, x:GLfloat, y:GLfloat, z:GLfloat) : Void;
-// public function uniform3i(location:WebGLUniformLocation, x:GLint, y:GLint, z:GLint) : Void;
-// public function uniform4f(location:WebGLUniformLocation, x:GLfloat, y:GLfloat, z:GLfloat, w:GLfloat) : Void;
-// public function uniform4i(location:WebGLUniformLocation, x:GLint, y:GLint, z:GLint, w:GLint) : Void;
+// Replaces a portion of an existing 2D texture image with all of another image.
+func (c *Context) TexSubImage2D(target, level, xoffset, yoffset, format, typ int, image js.Object) {
+	c.Call("texSubImage2D", target, level, xoffset, yoffset, format, typ, image)
+}
+
+// Assigns a floating point value to a uniform variable for the current program object.
+func (c *Context) Uniform1f(location js.Object, x float32) {
+	c.Call("uniform1f", location, x)
+}
+
+// Assigns a integer value to a uniform variable for the current program object.
+func (c *Context) Uniform1i(location js.Object, x int) {
+	c.Call("uniform1i", location, x)
+}
+
+// Assigns 2 floating point values to a uniform variable for the current program object.
+func (c *Context) Uniform2f(location js.Object, x, y float32) {
+	c.Call("uniform2f", location, x, y)
+}
+
+// Assigns 2 integer values to a uniform variable for the current program object.
+func (c *Context) Uniform2i(location js.Object, x, y int) {
+	c.Call("uniform2i", location, x, y)
+}
+
+// Assigns 3 floating point values to a uniform variable for the current program object.
+func (c *Context) Uniform3f(location js.Object, x, y, z float32) {
+	c.Call("uniform3f", location, x, y, z)
+}
+
+// Assigns 3 integer values to a uniform variable for the current program object.
+func (c *Context) Uniform3i(location js.Object, x, y, z int) {
+	c.Call("uniform3i", location, x, y, z)
+}
+
+// Assigns 4 floating point values to a uniform variable for the current program object.
+func (c *Context) Uniform4f(location js.Object, x, y, z, w float32) {
+	c.Call("uniform4f", location, x, y, z, w)
+}
+
+// Assigns 4 integer values to a uniform variable for the current program object.
+func (c *Context) Uniform4i(location js.Object, x, y, z, w int) {
+	c.Call("uniform4i", location, x, y, z, w)
+}
+
 // public function uniform1fv(location:WebGLUniformLocation, v:ArrayAccess<Float>) : Void;
 // public function uniform1iv(location:WebGLUniformLocation, v:ArrayAccess<Long>) : Void;
 // public function uniform2fv(location:WebGLUniformLocation, v:ArrayAccess<Float>) : Void;
@@ -834,32 +928,50 @@ func (c *Context) TexParameteri(target int, pname int, param int) {
 // public function uniform3iv(location:WebGLUniformLocation, v:ArrayAccess<Long>) : Void;
 // public function uniform4fv(location:WebGLUniformLocation, v:ArrayAccess<Float>) : Void;
 // public function uniform4iv(location:WebGLUniformLocation, v:ArrayAccess<Long>) : Void;
-// public function uniformMatrix2fv(location:WebGLUniformLocation, transpose:GLboolean, value:ArrayAccess<Float>) : Void;
-// public function  uniformMatrix3fv(location:WebGLUniformLocation, transpose:GLboolean, value:ArrayAccess<Float>) : Void;
 
+// Sets values for a 2x2 floating point vector matrix into a
+// uniform location as a matrix or a matrix array.
+func (c *Context) UniformMatrix2fv(location js.Object, transpose bool, value []float32) {
+	c.Call("uniformMatrix2fv", location, transpose, value)
+}
+
+// Sets values for a 3x3 floating point vector matrix into a
+// uniform location as a matrix or a matrix array.
+func (c *Context) UniformMatrix3fv(location js.Object, transpose bool, value []float32) {
+	c.Call("uniformMatrix3fv", location, transpose, value)
+}
+
+// Sets values for a 4x4 floating point vector matrix into a
+// uniform location as a matrix or a matrix array.
 func (c *Context) UniformMatrix4fv(location js.Object, transpose bool, value []float32) {
 	c.Call("uniformMatrix4fv", location, transpose, value)
 }
 
+// Set the program object to use for rendering.
 func (c *Context) UseProgram(program js.Object) {
 	c.Call("useProgram", program)
 }
 
+// Returns whether a given program can run in the current WebGL state.
 func (c *Context) ValidateProgram(program js.Object) {
 	c.Call("validateProgram", program)
+}
+
+func (c *Context) VertexAttribPointer(index, size, typ int, normal bool, stride int, offset int) {
+	c.Call("vertexAttribPointer", index, size, typ, normal, stride, offset)
 }
 
 // public function vertexAttrib1f(indx:GLuint, x:GLfloat) : Void;
 // public function vertexAttrib2f(indx:GLuint, x:GLfloat, y:GLfloat) : Void;
 // public function vertexAttrib3f(indx:GLuint, x:GLfloat, y:GLfloat, z:GLfloat) : Void;
 // public function vertexAttrib4f(indx:GLuint, x:GLfloat, y:GLfloat, z:GLfloat, w:GLfloat) : Void;
-
-func (c *Context) VertexAttribPointer(index, size, typ int, normal bool, stride int, offset int) {
-	c.Call("vertexAttribPointer", index, size, typ, normal, stride, offset)
-}
-
 // public function vertexAttrib1fv(indx:GLuint, values:ArrayAccess<Float>) : Void;
 // public function vertexAttrib2fv(indx:GLuint, values:ArrayAccess<Float>) : Void;
 // public function vertexAttrib3fv(indx:GLuint, values:ArrayAccess<Float>) : Void;
 // public function vertexAttrib4fv(indx:GLuint, values:ArrayAccess<Float>) : Void;
-// public function viewport(x:GLint, y:GLint, width:GLsizei, height:GLsizei) : Void;
+
+// Represents a rectangular viewable area that contains
+// the rendering results of the drawing buffer.
+func (c *Context) Viewport(x, y, width, height int) {
+	c.Call("viewport", x, y, width, height)
+}
