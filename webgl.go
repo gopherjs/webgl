@@ -467,7 +467,7 @@ func (c *Context) Clear(flags int) {
 }
 
 // Specifies color values to use by the clear method to clear the color buffer.
-func (c *Context) ClearColor(r, g, b, a float64) {
+func (c *Context) ClearColor(r, g, b, a float32) {
 	c.Call("clearColor", r, g, b, a)
 }
 
