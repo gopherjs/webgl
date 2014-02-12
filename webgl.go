@@ -6,7 +6,7 @@ package webgl
 
 import (
 	"errors"
-	"github.com/neelance/gopherjs/js"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 type ContextAttributes struct {
