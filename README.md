@@ -3,8 +3,8 @@
 [GopherJS](https://github.com/neelance/gopherjs) binding to the webgl context.
 
 ```go
-import "github.com/ajhager/webgl"
-import "github.com/neelance/gopherjs/js"
+import "github.com/gopherjs/webgl"
+import "github.com/gopherjs/gopherjs/js"
 
 document := js.Global("document")
 canvas := document.Call("createElement", "canvas")
@@ -22,5 +22,3 @@ if err != nil {
 gl.ClearColor(1, 0, 0, 1)
 gl.Clear(webgl.COLOR_BUFFER_BIT)
 ```
-
-STILL *ALPHA*: Need to finish adding methods and add type safety.
