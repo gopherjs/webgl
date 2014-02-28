@@ -340,7 +340,7 @@ type Context struct {
 // If an error is returned it means you won't have access to WebGL
 // functionality.
 func NewContext(canvas js.Object, ca *ContextAttributes) (*Context, error) {
-	if js.Global("window").Get("WebGLRenderingContext").IsUndefined() {
+	if js.Global.Get("WebGLRenderingContext").IsUndefined() {
 		return nil, errors.New("Your browser doesn't appear to support webgl.")
 	}
 
