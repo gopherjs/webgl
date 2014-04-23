@@ -729,7 +729,7 @@ func (c *Context) GetProgramParameterb(program js.Object, pname int) bool {
 // Returns information about the last error that occurred during
 // the failed linking or validation of a WebGL program object.
 func (c *Context) GetProgramInfoLog(program js.Object) string {
-	return c.Call("getProgramInfoLog", program).String()
+	return c.Call("getProgramInfoLog", program).Str()
 }
 
 // TODO: Create type specific variations.
@@ -751,12 +751,12 @@ func (c *Context) GetShaderParameterb(shader js.Object, pname int) bool {
 
 // Returns errors which occur when compiling a shader.
 func (c *Context) GetShaderInfoLog(shader js.Object) string {
-	return c.Call("getShaderInfoLog", shader).String()
+	return c.Call("getShaderInfoLog", shader).Str()
 }
 
 // Returns source code string associated with a shader object.
 func (c *Context) GetShaderSource(shader js.Object) string {
-	return c.Call("getShaderSource", shader).String()
+	return c.Call("getShaderSource", shader).Str()
 }
 
 // Returns a slice of supported extension strings.
@@ -764,7 +764,7 @@ func (c *Context) GetSupportedExtensions() []string {
 	ext := c.Call("getSupportedExtensions")
 	extensions := make([]string, ext.Length())
 	for i := 0; i < ext.Length(); i++ {
-		extensions[i] = ext.Index(i).String()
+		extensions[i] = ext.Index(i).Str()
 	}
 	return extensions
 }
