@@ -26,7 +26,7 @@ func main() {
 
 	gl, err := webgl.NewContext(canvas, attrs)
 	if err != nil {
-		panic(err)
+		js.Global.Call("alert", "Error: "+err.Error())
 	}
 
 	gl.ClearColor(0.8, 0.3, 0.01, 1)
@@ -37,7 +37,7 @@ func main() {
 webgl_example.html:
 
 ```html
-<html><head></head><body><script src="webgl_example.js"></script></body></html>
+<html><body><script src="webgl_example.js"></script></body></html>
 ```
 
 To produce `webgl_example.js` file, run `gopherjs build webgl_example.go`.
