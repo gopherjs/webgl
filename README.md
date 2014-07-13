@@ -2,7 +2,7 @@
 
 [GopherJS](https://github.com/neelance/gopherjs) binding to the webgl context.
 
-```go
+```Go
 import "github.com/gopherjs/webgl"
 import "github.com/gopherjs/gopherjs/js"
 
@@ -14,9 +14,8 @@ attrs := webgl.DefaultAttributes()
 attrs.Alpha = false
 
 gl, err := webgl.NewContext(canvas, attrs)
-
 if err != nil {
-   panic(err)   
+	panic(err)
 }
 
 gl.ClearColor(1, 0, 0, 1)
