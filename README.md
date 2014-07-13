@@ -1,23 +1,43 @@
 # webgl
 
-[GopherJS](https://github.com/neelance/gopherjs) binding to the webgl context.
+[GopherJS](https://github.com/neelance/gopherjs) bindings for WebGL context.
+
+## Example
+
+![Screenshot](https://cloud.githubusercontent.com/assets/1924134/3566022/5d81f2d0-0ae0-11e4-82e4-3cb33b83d8d3.png)
+
+webgl_example.go:
 
 ```Go
-import "github.com/gopherjs/webgl"
-import "github.com/gopherjs/gopherjs/js"
+package main
 
-document := js.Global("document")
-canvas := document.Call("createElement", "canvas")
-document.Get("body").Call("appendChild", canvas)
+import (
+	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/webgl"
+)
 
-attrs := webgl.DefaultAttributes()
-attrs.Alpha = false
+func main() {
+	document := js.Global.Get("document")
+	canvas := document.Call("createElement", "canvas")
+	document.Get("body").Call("appendChild", canvas)
 
-gl, err := webgl.NewContext(canvas, attrs)
-if err != nil {
-	panic(err)
+	attrs := webgl.DefaultAttributes()
+	attrs.Alpha = false
+
+	gl, err := webgl.NewContext(canvas, attrs)
+	if err != nil {
+		panic(err)
+	}
+
+	gl.ClearColor(0.8, 0.3, 0.01, 1)
+	gl.Clear(gl.COLOR_BUFFER_BIT)
 }
-
-gl.ClearColor(1, 0, 0, 1)
-gl.Clear(webgl.COLOR_BUFFER_BIT)
 ```
+
+webgl_example.html:
+
+```html
+<html><head></head><body><script src="webgl_example.js"></script></body></html>
+```
+
+To produce `webgl_example.js` file, run `gopherjs build webgl_example.go`.
