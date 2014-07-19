@@ -447,12 +447,12 @@ func (c *Context) BlendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha int) {
 
 // Creates a buffer in memory and initializes it with array data.
 // If no array is provided, the contents of the buffer is initialized to 0.
-func (c *Context) BufferData(target int, data js.Object, usage int) {
+func (c *Context) BufferData(target int, data interface{}, usage int) {
 	c.Call("bufferData", target, data, usage)
 }
 
 // Used to modify or update some or all of a data store for a bound buffer object.
-func (c *Context) BufferSubData(target int, offset int, data js.Object) {
+func (c *Context) BufferSubData(target int, offset int, data interface{}) {
 	c.Call("bufferSubData", target, offset, data)
 }
 
