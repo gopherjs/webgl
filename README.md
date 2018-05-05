@@ -1,3 +1,6 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/gopherjs/webgl)](https://goreportcard.com/report/github.com/gopherjs/webgl)
+[![GoDoc](https://godoc.org/github.com/gopherjs/webgl?status.svg)](https://godoc.org/github.com/gopherjs/webgl)
+
 # webgl
 
 [GopherJS](https://github.com/neelance/gopherjs) bindings for WebGL context.
