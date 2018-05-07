@@ -35,23 +35,29 @@ func main() {
 	// Unbind the buffer
 	gl.BindBuffer(gl.ARRAY_BUFFER, nil)
 
-	/* Step3: Create and compile Shader programs */
+	// Step3: Create and compile Shader programs
 
 	// Vertex shader source code
-	vertCode := `attribute vec2 coordinates;` +
-		`void main(void) {` + ` gl_Position = vec4(coordinates,0.0, 1.0);` + `}`
+	vertCode := `
+	attribute vec2 coordinates;
+	void main(void) {
+		gl_Position = vec4(coordinates,0.0, 1.0);
+	}`
 
-	//Create a vertex shader object
+	// Create a vertex shader object
 	vertShader := gl.CreateShader(gl.VERTEX_SHADER)
 
-	//Attach vertex shader source code
+	// Attach vertex shader source code
 	gl.ShaderSource(vertShader, vertCode)
 
-	//Compile the vertex shader
+	// Compile the vertex shader
 	gl.CompileShader(vertShader)
 
-	//Fragment shader source code
-	fragCode := `void main(void) {` + `gl_FragColor = vec4(0.0, 0.0, 0.0, 0.1);` + `}`
+	// Fragment shader source code
+	fragCode := `
+	void main(void) {
+		gl_FragColor = vec4(0.0, 0.0, 0.0, 0.1); 
+	}`
 
 	// Create fragment shader object
 	fragShader := gl.CreateShader(gl.FRAGMENT_SHADER)
@@ -77,21 +83,21 @@ func main() {
 	// Use the combined shader program object
 	gl.UseProgram(shaderProgram)
 
-	/* Step 4: Associate the shader programs to buffer objects */
+	// Step 4: Associate the shader programs to buffer objects
 
-	//Bind vertex buffer object
+	// Bind vertex buffer object
 	gl.BindBuffer(gl.ARRAY_BUFFER, vertex_buffer)
 
-	//Get the attribute location
+	// Get the attribute location
 	coord := gl.GetAttribLocation(shaderProgram, "coordinates")
 
-	//point an attribute to the currently bound VBO
+	// Point an attribute to the currently bound VBO
 	gl.VertexAttribPointer(coord, 2, gl.FLOAT, false, 0, 0)
 
-	//Enable the attribute
+	// Enable the attribute
 	gl.EnableVertexAttribArray(coord)
 
-	/* Step5: Drawing the required object (triangle) */
+	// Step5: Drawing the required object (triangle)
 
 	// Clear the canvas
 	gl.ClearColor(0.5, 0.5, 0.5, 0.9)
