@@ -1,6 +1,6 @@
 # webgl
 
-[GopherJS](https://github.com/neelance/gopherjs) bindings for WebGL context.
+[GopherJS](https://github.com/gopherjs/gopherjs) bindings for [WebGL 1.0](https://www.khronos.org/registry/webgl/specs/latest/1.0/) context.
 
 ## Example
 
