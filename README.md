@@ -1,5 +1,8 @@
 # webgl
 
+[![GoDoc](https://godoc.org/github.com/gopherjs/webgl?status.svg)](https://godoc.org/github.com/gopherjs/webgl)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gopherjs/webgl)](https://goreportcard.com/report/github.com/gopherjs/webgl)
+
 [GopherJS](https://github.com/neelance/gopherjs) bindings for WebGL context.
 
 ## Example
