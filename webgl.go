@@ -6,6 +6,7 @@ package webgl
 
 import (
 	"errors"
+	"reflect"
 
 	"github.com/gopherjs/gopherwasm/js"
 )
@@ -44,6 +45,13 @@ func DefaultAttributes() *ContextAttributes {
 
 type Context struct {
 	js.Value
+
+	// NOTE undefined constants in webgl, should be removed here?
+	// INFO_LOG_LENGTH
+	// NUM_COMPRESSED_TEXTURE_FORMATS
+	// SHADER_COMPILER
+	// SHADER_SOURCE_LENGTH
+	// STENCIL_INDEX
 	ARRAY_BUFFER                                 int `js:"ARRAY_BUFFER"`
 	ARRAY_BUFFER_BINDING                         int `js:"ARRAY_BUFFER_BINDING"`
 	ATTACHED_SHADERS                             int `js:"ATTACHED_SHADERS"`
@@ -337,11 +345,36 @@ type Context struct {
 	ZERO                                         int `js:"ZERO"`
 }
 
+// initGlConstants initializes all GL constants from a webgl context.
+// This is necessary because wasm does not support struct tags.
+func (c *Context) initGlConstants() {
+	fields := reflect.TypeOf(*c)
+	num := fields.NumField()
+	// This functions is only called if creating a webgl context was successful.
+	// Thus we don't need to check here. Prototype is required for Safari.
+	ctx := js.Global().Get("WebGLRenderingContext").Get("prototype")
+
+	for i := 0; i < num; i++ {
+		field := fields.Field(i)
+
+		// Ignore the embedded js.Value. All other fields are gl constants.
+		if field.Name != "Value" {
+			// Retrieve value from gl context.
+			jsval := ctx.Get(field.Name)
+			if jsval.Type() == js.TypeNumber {
+				val := int64(jsval.Int())
+				// And set it via reflect.
+				reflect.ValueOf(c).Elem().Field(i).SetInt(val)
+			}
+		}
+	}
+}
+
 // NewContext takes an HTML5 canvas object and optional context attributes.
 // If an error is returned it means you won't have access to WebGL
 // functionality.
 func NewContext(canvas js.Value, ca *ContextAttributes) (*Context, error) {
-	if js.Global().Get("WebGLRenderingContext").Get("prototype") == js.Null() {
+	if js.Global().Get("WebGLRenderingContext") == js.Undefined() {
 		return nil, errors.New("Your browser doesn't appear to support webgl.")
 	}
 
@@ -349,14 +382,14 @@ func NewContext(canvas js.Value, ca *ContextAttributes) (*Context, error) {
 		ca = DefaultAttributes()
 	}
 
-	attrs := map[string]bool{
-		"alpha":                 ca.Alpha,
-		"depth":                 ca.Depth,
-		"stencil":               ca.Stencil,
-		"antialias":             ca.Antialias,
-		"premultipliedAlpha":    ca.PremultipliedAlpha,
-		"preserveDrawingBuffer": ca.PreserveDrawingBuffer,
-	}
+	attrs := js.Global().Get("Object").New()
+	attrs.Set("alpha", ca.Alpha)
+	attrs.Set("depth", ca.Depth)
+	attrs.Set("stencil", ca.Stencil)
+	attrs.Set("antialias", ca.Antialias)
+	attrs.Set("premultipliedAlpha", ca.PremultipliedAlpha)
+	attrs.Set("preserveDrawingBuffer", ca.PreserveDrawingBuffer)
+
 	gl := canvas.Call("getContext", "webgl", attrs)
 	if gl == js.Null() {
 		gl = canvas.Call("getContext", "experimental-webgl", attrs)
@@ -365,6 +398,7 @@ func NewContext(canvas js.Value, ca *ContextAttributes) (*Context, error) {
 		}
 	}
 	ctx := new(Context)
+	ctx.initGlConstants()
 	ctx.Value = gl
 	return ctx, nil
 }
