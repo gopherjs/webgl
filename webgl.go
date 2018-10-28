@@ -46,12 +46,6 @@ func DefaultAttributes() *ContextAttributes {
 type Context struct {
 	js.Value
 
-	// NOTE undefined constants in webgl, should be removed here?
-	// INFO_LOG_LENGTH
-	// NUM_COMPRESSED_TEXTURE_FORMATS
-	// SHADER_COMPILER
-	// SHADER_SOURCE_LENGTH
-	// STENCIL_INDEX
 	ARRAY_BUFFER                                 int `js:"ARRAY_BUFFER"`
 	ARRAY_BUFFER_BINDING                         int `js:"ARRAY_BUFFER_BINDING"`
 	ATTACHED_SHADERS                             int `js:"ATTACHED_SHADERS"`
@@ -147,7 +141,6 @@ type Context struct {
 	HIGH_INT                                     int `js:"HIGH_INT"`
 	INCR                                         int `js:"INCR"`
 	INCR_WRAP                                    int `js:"INCR_WRAP"`
-	INFO_LOG_LENGTH                              int `js:"INFO_LOG_LENGTH"`
 	INT                                          int `js:"INT"`
 	INT_VEC2                                     int `js:"INT_VEC2"`
 	INT_VEC3                                     int `js:"INT_VEC3"`
@@ -194,7 +187,6 @@ type Context struct {
 	NONE                                         int `js:"NONE"`
 	NOTEQUAL                                     int `js:"NOTEQUAL"`
 	NO_ERROR                                     int `js:"NO_ERROR"`
-	NUM_COMPRESSED_TEXTURE_FORMATS               int `js:"NUM_COMPRESSED_TEXTURE_FORMATS"`
 	ONE                                          int `js:"ONE"`
 	ONE_MINUS_CONSTANT_ALPHA                     int `js:"ONE_MINUS_CONSTANT_ALPHA"`
 	ONE_MINUS_CONSTANT_COLOR                     int `js:"ONE_MINUS_CONSTANT_COLOR"`
@@ -238,8 +230,6 @@ type Context struct {
 	SAMPLE_COVERAGE_VALUE                        int `js:"SAMPLE_COVERAGE_VALUE"`
 	SCISSOR_BOX                                  int `js:"SCISSOR_BOX"`
 	SCISSOR_TEST                                 int `js:"SCISSOR_TEST"`
-	SHADER_COMPILER                              int `js:"SHADER_COMPILER"`
-	SHADER_SOURCE_LENGTH                         int `js:"SHADER_SOURCE_LENGTH"`
 	SHADER_TYPE                                  int `js:"SHADER_TYPE"`
 	SHADING_LANGUAGE_VERSION                     int `js:"SHADING_LANGUAGE_VERSION"`
 	SHORT                                        int `js:"SHORT"`
@@ -260,7 +250,6 @@ type Context struct {
 	STENCIL_CLEAR_VALUE                          int `js:"STENCIL_CLEAR_VALUE"`
 	STENCIL_FAIL                                 int `js:"STENCIL_FAIL"`
 	STENCIL_FUNC                                 int `js:"STENCIL_FUNC"`
-	STENCIL_INDEX                                int `js:"STENCIL_INDEX"`
 	STENCIL_INDEX8                               int `js:"STENCIL_INDEX8"`
 	STENCIL_PASS_DEPTH_FAIL                      int `js:"STENCIL_PASS_DEPTH_FAIL"`
 	STENCIL_PASS_DEPTH_PASS                      int `js:"STENCIL_PASS_DEPTH_PASS"`
