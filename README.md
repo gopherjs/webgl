@@ -26,6 +26,7 @@ func main() {
 	canvas := document.Call("createElement", "canvas")
 	if canvas == js.Null() {
 		fmt.Println("CANVAS IS NULL")
+		return
 	}
 
 	canvas.Set("width", 800)

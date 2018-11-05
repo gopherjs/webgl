@@ -348,15 +348,18 @@ func (c *Context) initGlConstants() {
 
 	for i := 0; i < num; i++ {
 		field := fields.Field(i)
-		// Ignore the embedded js.Value. All other fields are gl constants.
-		if field.Name != "Value" {
-			// Retrieve value from gl context.
-			jsval := ctx.Get(field.Name)
-			if jsval.Type() == js.TypeNumber {
-				val := int64(jsval.Int())
-				// And set it via reflect.
-				reflect.ValueOf(c).Elem().Field(i).SetInt(val)
-			}
+
+		if field.Name == "Value" {
+			// Ignore the embedded js.Value. All other fields are gl constants.
+			continue
+		}
+
+		// Retrieve value from gl context.
+		jsval := ctx.Get(field.Name)
+		if jsval.Type() == js.TypeNumber {
+			val := int64(jsval.Int())
+			// And set it via reflect.
+			reflect.ValueOf(c).Elem().Field(i).SetInt(val)
 		}
 	}
 }
@@ -382,9 +385,9 @@ func NewContext(canvas js.Value, ca *ContextAttributes) (*Context, error) {
 	attrs.Set("preserveDrawingBuffer", ca.PreserveDrawingBuffer)
 
 	gl := canvas.Call("getContext", "webgl", attrs)
-	if gl == js.Null() {
+	if gl == js.Undefined() {
 		gl = canvas.Call("getContext", "experimental-webgl", attrs)
-		if gl == js.Null() {
+		if gl == js.Undefined() {
 			return nil, errors.New("Creating a webgl context has failed.")
 		}
 	}
