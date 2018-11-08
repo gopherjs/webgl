@@ -355,12 +355,11 @@ func (c *Context) initGlConstants() {
 		}
 
 		// Retrieve value from gl context.
+		// This will panic if the value does not exist.
 		jsval := ctx.Get(field.Name)
-		if jsval.Type() == js.TypeNumber {
-			val := int64(jsval.Int())
-			// And set it via reflect.
-			reflect.ValueOf(c).Elem().Field(i).SetInt(val)
-		}
+		val := int64(jsval.Int())
+		// And set it via reflect.
+		reflect.ValueOf(c).Elem().Field(i).SetInt(val)
 	}
 }
 
